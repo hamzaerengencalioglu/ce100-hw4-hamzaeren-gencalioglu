@@ -322,7 +322,7 @@ namespace CryptoLibrary
                     // Write pufferi to the target file
                     File.WriteAllBytes(destFilePath, dataBuffer);
 
-                    Console.WriteLine("Dosya başarıyla şifrelendi ve hedef konuma taşındı: " + destFilePath);
+                    Console.WriteLine("The file was successfully encrypted and moved to the destination location: " + destFilePath);
                 }
                 else if (operation == 0)
                 {
@@ -353,23 +353,18 @@ namespace CryptoLibrary
 
                     // Write the decoded file to the destination file
                     File.WriteAllBytes(destFilePath, fileData);
-                    Console.WriteLine("Dosya başarıyla çözüldü ve bütünlük kontrolü tamamlandı: " + destFilePath);
+                    Console.WriteLine("The file has been successfully decrypted and the integrity check is complete: " + destFilePath);
                 }
                 else
                 {
-                    Console.WriteLine("Geçersiz işlem kodu. İşlem kodu 0 veya 1 olmalıdır.");
+                    Console.WriteLine("Invalid transaction code. The transaction code must be 0 or 1.");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Hata oluştu: " + ex.Message);
+                Console.WriteLine("Error occurred: " + ex.Message);
             }
         }
-
-
-
-
-
 
 
         public static byte[] EncryptCBC(byte[] plainTextBytes, string key)
@@ -410,12 +405,6 @@ namespace CryptoLibrary
                 return Encoding.UTF8.GetString(decryptedBytes);
             }
         }
-
-
-
-
-
-
 
 
         private const int DIGITS = 6; // Number of households of the OTP
