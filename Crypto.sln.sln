@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoLibrary", "CryptoLibrary\CryptoLibrary.csproj", "{7124892A-B8A1-410E-80A1-C7ABCB9C10AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoApplication", "CryptoApplication\CryptoApplication.csproj", "{81278330-3DAC-48D4-A20A-0D6541D57DF0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptoLibrary.Test", "CryptoLibrary.Test\CryptoLibrary.Test.csproj", "{F755E03F-FC9B-4BC4-AD65-A140E43456CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7124892A-B8A1-410E-80A1-C7ABCB9C10AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7124892A-B8A1-410E-80A1-C7ABCB9C10AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7124892A-B8A1-410E-80A1-C7ABCB9C10AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7124892A-B8A1-410E-80A1-C7ABCB9C10AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81278330-3DAC-48D4-A20A-0D6541D57DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81278330-3DAC-48D4-A20A-0D6541D57DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81278330-3DAC-48D4-A20A-0D6541D57DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81278330-3DAC-48D4-A20A-0D6541D57DF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F755E03F-FC9B-4BC4-AD65-A140E43456CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F755E03F-FC9B-4BC4-AD65-A140E43456CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F755E03F-FC9B-4BC4-AD65-A140E43456CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F755E03F-FC9B-4BC4-AD65-A140E43456CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
