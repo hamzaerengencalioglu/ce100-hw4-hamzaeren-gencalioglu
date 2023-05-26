@@ -26,7 +26,7 @@ namespace CryptoLibrary.Test
             
             string filePath = File.ReadAllText("TransformFile/input.txt");
             // Arrange
-            byte[] data = Encoding.UTF8.GetBytes(filePath); //hex : 48 65 6C 6C 6F 2C 20 57 6F 72 6C 64 21
+            byte[] data = Encoding.UTF8.GetBytes(filePath); 
 
             // Act
             byte[] hash = Crypto.ComputeSHA1(data);
@@ -44,7 +44,7 @@ namespace CryptoLibrary.Test
             // Arrange
             string filePath = File.ReadAllText("TransformFile/input.txt");
 
-            byte[] data = Encoding.UTF8.GetBytes(filePath); //hex : 48 65 6C 6C 6F 2C 20 57 6F 72 6C 64 21
+            byte[] data = Encoding.UTF8.GetBytes(filePath); 
 
             // Act
             byte[] hash = Crypto.ComputeSHA256(data);
@@ -60,7 +60,7 @@ namespace CryptoLibrary.Test
         {
             // Arrange
             string filePath = File.ReadAllText("TransformFile/input.txt");
-            byte[] data = Encoding.UTF8.GetBytes(filePath); //hex : 48 65 6C 6C 6F 2C 20 57 6F 72 6C 64 21
+            byte[] data = Encoding.UTF8.GetBytes(filePath);
 
             // Act
             byte[] hash = Crypto.ComputeSHA512(data);
@@ -76,8 +76,8 @@ namespace CryptoLibrary.Test
         {
             // Arrange
             string filePath = File.ReadAllText("TransformFile/input.txt");
-            byte[] data = Encoding.UTF8.GetBytes(filePath); //hex : 48 65 6C 6C 6F 2C 20 57 6F 72 6C 64 21
-            string key = "00196761"; //  hex : 31 32 33 34 35 36 37 38
+            byte[] data = Encoding.UTF8.GetBytes(filePath); 
+            string key = "00196761"; 
 
             // Act
             byte[] encrypted = crypto.DESEncrypt(data, key);
@@ -93,8 +93,8 @@ namespace CryptoLibrary.Test
         {
             // Arrange
             string filePath = File.ReadAllText("TransformFile/input.txt");
-            byte[] data = Encoding.UTF8.GetBytes(filePath); //hex : 48 65 6C 6C 6F 2C 20 57 6F 72 6C 64 21
-            string key = "Trabzonspor01967"; //  hex : 31 32 33 34 35 36 37 38 39 31 32 33 34 35 36 37
+            byte[] data = Encoding.UTF8.GetBytes(filePath); 
+            string key = "Trabzonspor01967"; 
 
             // Act
             byte[] encrypted = crypto.AESEncrypt(data, key);
@@ -110,8 +110,8 @@ namespace CryptoLibrary.Test
         {
             // Arrange
             string filePath = File.ReadAllText("TransformFile/input.txt");
-            byte[] data = Encoding.UTF8.GetBytes(filePath); //hex : 48 65 6C 6C 6F 2C 20 57 6F 72 6C 64 21
-            byte[] key = Encoding.UTF8.GetBytes("Trabzonspor"); //  hex : 53 61 6D 70 6C 65 4B 65 79 31 32 33
+            byte[] data = Encoding.UTF8.GetBytes(filePath); 
+            byte[] key = Encoding.UTF8.GetBytes("Trabzonspor");
 
             // Act
             byte[] hmac = crypto.ComputeHMACSHA1(data, key);
@@ -127,8 +127,8 @@ namespace CryptoLibrary.Test
         {
             // Arrange
             string filePath = File.ReadAllText("TransformFile/input.txt");
-            byte[] data = Encoding.UTF8.GetBytes(filePath); //hex : 48 65 6C 6C 6F 2C 20 57 6F 72 6C 64 21
-            byte[] key = Encoding.UTF8.GetBytes("Trabzonspor"); //  hex : 53 61 6D 70 6C 65 4B 65 79 31 32 33
+            byte[] data = Encoding.UTF8.GetBytes(filePath);
+            byte[] key = Encoding.UTF8.GetBytes("Trabzonspor"); 
 
             // Act
             byte[] hmac = crypto.ComputeHMACSHA256(data, key);
@@ -170,8 +170,6 @@ namespace CryptoLibrary.Test
             Assert.Equal(sourceText, decryptedText);
 
         }
-
-
 
 
         [Fact]
