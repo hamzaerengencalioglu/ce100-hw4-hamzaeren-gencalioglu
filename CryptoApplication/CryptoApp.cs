@@ -16,15 +16,12 @@ internal class CryptoApp
       
         // SHA-1
         byte[] sha1Hash = Crypto.ComputeSHA1(data);
-        Console.WriteLine("SHA-1: " + cryptoLibrary.ByteArrayToHex(sha1Hash) + "\n");
+        Console.WriteLine("SHA-1: " + Crypto.ByteArrayToHex(sha1Hash) + "\n");
 
         // SHA-256
         byte[] sha256Hash = Crypto.ComputeSHA256(data);
-        Console.WriteLine("SHA-256: " + cryptoLibrary.ByteArrayToHex(sha256Hash)+"\n");
+        Console.WriteLine("SHA-256: " + Crypto.ByteArrayToHex(sha256Hash)+"\n");
 
-        // SHA-512
-        byte[] sha512Hash = Crypto.ComputeSHA512(data);
-        Console.WriteLine("SHA-512: " + cryptoLibrary.ByteArrayToHex(sha512Hash) + "\n");
 
         // DES
         string desKey = "00196761"; // 8 characters for DES
@@ -43,20 +40,13 @@ internal class CryptoApp
         // HMAC-SHA1
         byte[] hmacSha1Key = Encoding.UTF8.GetBytes("Trabzonspor");
         byte[] hmacSha1Hash = cryptoLibrary.ComputeHMACSHA1(data, hmacSha1Key);
-        Console.WriteLine("HMAC-SHA1: " + cryptoLibrary.ByteArrayToHex(hmacSha1Hash) + "\n");
+        Console.WriteLine("HMAC-SHA1: " + Crypto.ByteArrayToHex(hmacSha1Hash) + "\n");
 
         // HMAC-SHA256
         byte[] hmacSha256Key = Encoding.UTF8.GetBytes("myhmac256key");
         byte[] hmacSha256Hash = cryptoLibrary.ComputeHMACSHA256(data, hmacSha256Key);
-        Console.WriteLine("HMAC-SHA256: " + cryptoLibrary.ByteArrayToHex(hmacSha256Hash) + "\n");
+        Console.WriteLine("HMAC-SHA256: " + Crypto.ByteArrayToHex(hmacSha256Hash) + "\n");
 
-        // CRC32
-        byte[] crc32Hash = cryptoLibrary.ComputeCRC32(data);
-        Console.WriteLine("CRC32: " + cryptoLibrary.ByteArrayToHex(crc32Hash) + "\n");
-
-        // MD5
-        byte[] md5Hash = cryptoLibrary.ComputeMD5(data);
-        Console.WriteLine("MD5: " + cryptoLibrary.ByteArrayToHex(md5Hash) + "\n");
 
         // CBC
         string aesKey1 = "aeskey1234567890"; // 16 characters for AES-128, 24 characters for AES-192, 32 characters for AES-256
@@ -66,11 +56,13 @@ internal class CryptoApp
         Console.WriteLine("CBC Decrypted Text: " + decryptedText + "\n");
 
 
-        //HOTP
-        string key = "Trabzonspor";
-        long counter = 123456;
-        string otp = Crypto.GenerateHOTP(key, counter);
-        Console.WriteLine("Generated OTP: " + otp);
+        //Hotp
+        string key = "Trabzonspor1967";
+        ulong counter = 123456;
+        // OTP değerini hesapla
+        int otp = Crypto.HOTP(key, counter);
+        // Sonucu konsola yazdır
+        Console.WriteLine("OTP: " + otp);
 
 
         Console.ReadLine();
