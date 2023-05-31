@@ -313,8 +313,8 @@ namespace CryptoLibrary
                     // Add the SHA-256 hash to the end of the puffer
                     Buffer.BlockCopy(sha256, 0, dataBuffer, 4 + 20 + fileData.Length, 32);
 
-                    //// Add the SHA-512 hash to the end of the puffer
-                    //Buffer.BlockCopy(sha512, 0, dataBuffer, 4 + 20 + fileData.Length + 32, 64);
+                    // Add the SHA-512 hash to the end of the puffer
+                    Buffer.BlockCopy(sha512, 0, dataBuffer, 4 + 20 + fileData.Length + 32, 64);
 
 
                     //Size the puffer as needed to add zero filling
@@ -344,9 +344,9 @@ namespace CryptoLibrary
                     byte[] sha256 = new byte[32];
                     Buffer.BlockCopy(dataBuffer, 4 + 20 + length, sha256, 0, 32);
 
-                    //// SHA-512 extract the summary from the puffer
-                    //byte[] sha512 = new byte[64];
-                    //Buffer.BlockCopy(dataBuffer, 4 + 20 + length + 32, sha512, 0, 64);
+                    // SHA-512 extract the summary from the puffer
+                    byte[] sha512 = new byte[64];
+                    Buffer.BlockCopy(dataBuffer, 4 + 20 + length + 32, sha512, 0, 64);
 
 
                     // Decrypt the encrypted file and perform integrity checks here
@@ -366,8 +366,13 @@ namespace CryptoLibrary
             }
         }
 
-
-        public static byte[] EncryptCBC(byte[] plainTextBytes, string key)
+        /// <summary>
+        /// Encrypts the provided plain text bytes using AES in CBC mode.
+        /// </summary>
+        /// <param name="TextBytes">The plain text bytes to encrypt.</param>
+        /// <param name="key">The encryption key.</param>
+        /// <returns>The encrypted bytes.</returns>
+        public static byte[] EncryptCBC(byte[] TextBytes, string key)
         {
             using (System.Security.Cryptography.Aes aes = System.Security.Cryptography.Aes.Create())
             {
@@ -379,7 +384,7 @@ namespace CryptoLibrary
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
                 // Perform the encryption by transforming the plain text bytes
-                byte[] encryptedBytes = encryptor.TransformFinalBlock(plainTextBytes, 0, plainTextBytes.Length);
+                byte[] encryptedBytes = encryptor.TransformFinalBlock(TextBytes, 0, TextBytes.Length);
 
                 // Return the encrypted bytes
                 return encryptedBytes;
@@ -387,6 +392,12 @@ namespace CryptoLibrary
         }
 
 
+        /// <summary>
+        /// Decrypts the provided encrypted bytes using AES in CBC mode.
+        /// </summary>
+        /// <param name="encryptedBytes">The encrypted bytes to decrypt.</param>
+        /// <param name="key">The encryption key.</param>
+        /// <returns>The decrypted string.</returns>
         public static string DecryptCBC(byte[] encryptedBytes, string key)
         {
             using (System.Security.Cryptography.Aes aes = System.Security.Cryptography.Aes.Create())
@@ -407,11 +418,19 @@ namespace CryptoLibrary
         }
 
 
-        private const int DIGITS = 6; // Number of households of the OTP
-                                      //private const int INTERVAL = 30; // Duration of OTP (seconds)
+        /// <summary>
+        /// Generates a HMAC-based One-Time Password (HOTP) using the specified key and counter.
+        /// </summary>
+        /// <param name="key">The key used for generating the OTP.</param>
+        /// <param name="counter">The counter value for the OTP generation.</param>
+        /// <returns>The generated OTP as a string.</returns>
 
+
+
+        private const int DIGITS = 6; // Number of households of the OTP
         public static string GenerateHOTP(string key, long counter)
         {
+
             // Convert the counter to bytes
             byte[] counterBytes = BitConverter.GetBytes(counter);
 
@@ -420,10 +439,10 @@ namespace CryptoLibrary
                 Array.Reverse(counterBytes);
 
             // Convert the key to ASCII bytes
-            byte[] keyBytes = Encoding.ASCII.GetBytes(key);
+            byte[] keyByte = Encoding.ASCII.GetBytes(key);
 
             // Create an instance of the HMACSHA1 algorithm using the key
-            HMACSHA1 hmac = new HMACSHA1(keyBytes);
+            HMACSHA1 hmac = new HMACSHA1(keyByte);
 
             // Compute the hash of the counter bytes using the HMACSHA1 algorithm
             byte[] hash = hmac.ComputeHash(counterBytes);
