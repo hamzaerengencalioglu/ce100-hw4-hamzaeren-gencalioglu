@@ -37,18 +37,6 @@ namespace CryptoLibrary
             }
         }
 
-        /// <summary>
-        /// Computes the SHA-512 hash of the given data.
-        /// </summary>
-        /// <param name="data">The data to compute the hash for.</param>
-        /// <returns>The computed SHA-512 hash.</returns>
-        public static byte[] ComputeSHA512(byte[] data)
-        {
-            using (SHA512 sha512 = SHA512.Create())
-            {
-                return sha512.ComputeHash(data);
-            }
-        }
 
         /// <summary>
         /// Encrypts the given data using the DES algorithm.
@@ -168,106 +156,18 @@ namespace CryptoLibrary
             }
         }
 
-        /// <summary>
-        /// Computes the CRC32 hash of the given data.
-        /// </summary>
-        /// <param name="data">The data to compute the CRC32 hash for.</param>
-        /// <returns>The computed CRC32 hash.</returns>
-        public byte[] ComputeCRC32(byte[] data)
-        {
-            using (CRC32 crc32 = new CRC32())
-            {
-                return crc32.ComputeHash(data);
-            }
-        }
-
-        /// <summary>
-        /// Computes the MD5 hash of the given data.
-        /// </summary>
-        /// <param name="data">The data to compute the MD5 hash for.</param>
-        /// <returns>The computed MD5 hash.</returns>
-        public byte[] ComputeMD5(byte[] data)
-        {
-            using (MD5 md5 = MD5.Create())
-            {
-                return md5.ComputeHash(data);
-            }
-        }
 
         /// <summary>
         /// Converts a byte array to its hexadecimal representation.
         /// </summary>
         /// <param name="bytes">The byte array to convert.</param>
         /// <returns>The hexadecimal representation of the byte array.</returns>
-        public string ByteArrayToHex(byte[] bytes)
+        public static string ByteArrayToHex(byte[] bytes)
         {
             StringBuilder hex = new StringBuilder(bytes.Length * 2);
             foreach (byte b in bytes)
                 hex.AppendFormat("{0:x2}", b);
             return hex.ToString();
-        }
-
-        /// <summary>
-        /// Implements the CRC32 hash algorithm.
-        /// </summary>
-        class CRC32 : HashAlgorithm
-        {
-            private const uint Poly = 0xEDB88320; // Polynomial constant for CRC-32 calculation
-            private uint[] table; // Lookup table for CRC-32 calculation
-
-            public CRC32()
-            {
-                HashSizeValue = 32; // Set the hash size to 32 bits
-                InitializeTable(); // Initialize the lookup table
-            }
-
-            public override void Initialize()
-            {
-                // Do nothing, as there is no additional initialization required
-            }
-
-            protected override void HashCore(byte[] array, int ibStart, int cbSize)
-            {
-                uint crc = uint.MaxValue; // Initialize the CRC value to its maximum value
-
-                // Iterate over the input array, starting from ibStart and processing cbSize bytes
-                for (int i = ibStart; i < ibStart + cbSize; i++)
-                {
-                    // Calculate the CRC value for each byte by XORing it with the current CRC value and using the lookup table
-                    crc = (crc >> 8) ^ table[array[i] ^ crc & 0xFF];
-                }
-
-                // Set the computed CRC value as the hash value
-                HashValue = new[] { (byte)(~crc >> 24), (byte)(~crc >> 16), (byte)(~crc >> 8), (byte)(~crc) };
-            }
-
-            protected override byte[] HashFinal()
-            {
-                return (byte[])HashValue.Clone(); // Return a clone of the hash value
-            }
-
-            private void InitializeTable()
-            {
-                table = new uint[256]; // Create a lookup table with 256 entries
-
-                // Populate the lookup table with precomputed values for faster CRC calculation
-                for (uint i = 0; i < 256; i++)
-                {
-                    uint entry = i;
-
-                    // Perform the polynomial division algorithm to compute the table entry
-                    for (int j = 0; j < 8; j++)
-                    {
-                        if ((entry & 1) == 1)
-                            entry = (entry >> 1) ^ Poly;
-                        else
-                            entry >>= 1;
-                    }
-
-                    // Store the computed entry in the lookup table
-                    table[i] = entry;
-                }
-            }
         }
 
 
@@ -294,7 +194,6 @@ namespace CryptoLibrary
 
                     byte[] sha256 = ComputeSHA256(fileData);
 
-                    byte[] sha512 = ComputeSHA512(fileData);
 
 
                     int bufferLength = 4 + 20 + fileData.Length + 32;
@@ -313,8 +212,6 @@ namespace CryptoLibrary
                     // Add the SHA-256 hash to the end of the puffer
                     Buffer.BlockCopy(sha256, 0, dataBuffer, 4 + 20 + fileData.Length, 32);
 
-                    // Add the SHA-512 hash to the end of the puffer
-                    Buffer.BlockCopy(sha512, 0, dataBuffer, 4 + 20 + fileData.Length + 32, 64);
 
 
                     //Size the puffer as needed to add zero filling
@@ -343,10 +240,6 @@ namespace CryptoLibrary
                     // Remove SHA-256 hash from puffer
                     byte[] sha256 = new byte[32];
                     Buffer.BlockCopy(dataBuffer, 4 + 20 + length, sha256, 0, 32);
-
-                    // SHA-512 extract the summary from the puffer
-                    byte[] sha512 = new byte[64];
-                    Buffer.BlockCopy(dataBuffer, 4 + 20 + length + 32, sha512, 0, 64);
 
 
                     // Decrypt the encrypted file and perform integrity checks here
@@ -427,42 +320,31 @@ namespace CryptoLibrary
 
 
 
-        private const int DIGITS = 6; // Number of households of the OTP
-        public static string GenerateHOTP(string key, long counter)
+        public static int HOTP(string key, ulong counter, int digits = 6)
         {
-
-            // Convert the counter to bytes
             byte[] counterBytes = BitConverter.GetBytes(counter);
-
-            // If the system is little-endian, reverse the byte order
             if (BitConverter.IsLittleEndian)
+            {
                 Array.Reverse(counterBytes);
+            }
 
-            // Convert the key to ASCII bytes
-            byte[] keyByte = Encoding.ASCII.GetBytes(key);
+            byte[] keyBytes = Encoding.UTF8.GetBytes(key);
 
-            // Create an instance of the HMACSHA1 algorithm using the key
-            HMACSHA1 hmac = new HMACSHA1(keyByte);
-
-            // Compute the hash of the counter bytes using the HMACSHA1 algorithm
+            HMACSHA1 hmac = new HMACSHA1(keyBytes);
             byte[] hash = hmac.ComputeHash(counterBytes);
 
-            // Calculate the offset for retrieving a subset of the hash
+            // Get the offset value from the last 4 bits of the hash
             int offset = hash[hash.Length - 1] & 0x0F;
 
-            // Extract a 32-bit integer value from the hash subset
-            int otpValue =
-            (
-                ((hash[offset] & 0x7F) << 24) |
-                ((hash[offset + 1] & 0xFF) << 16) |
-                ((hash[offset + 2] & 0xFF) << 8) |
-                (hash[offset + 3] & 0xFF)
-            ) % (int)Math.Pow(10, DIGITS);
+            // Extract 4 bytes starting from the offset
+            int binary = ((hash[offset] & 0x7F) << 24) |
+                         ((hash[offset + 1] & 0xFF) << 16) |
+                         ((hash[offset + 2] & 0xFF) << 8) |
+                         (hash[offset + 3] & 0xFF);
 
-            // Convert the OTP value to a string and pad it with leading zeros
-            string otp = otpValue.ToString().PadLeft(DIGITS, '0');
+            // Calculate the OTP value by taking modulus with 10^digits
+            int otp = binary % (int)Math.Pow(10, digits);
 
-            // Return the generated OTP
             return otp;
         }
 
