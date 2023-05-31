@@ -128,13 +128,13 @@ namespace CryptoLibrary.Test
             // Arrange
             string filePath = File.ReadAllText("TransformFile/input.txt");
             byte[] data = Encoding.UTF8.GetBytes(filePath);
-            byte[] key = Encoding.UTF8.GetBytes("Trabzonspor"); 
+            byte[] key = Encoding.UTF8.GetBytes("trbznsha256"); 
 
             // Act
             byte[] hmac = crypto.ComputeHMACSHA256(data, key);
 
             // Assert
-            string expectedHmac = "C3 D7 2D C2 16 8D 10 BD 49 30 86 64 89 D8 28 07 2D 6F 59 6D DA 44 B4 29 DC BA 41 35 87 7E 10 43";
+            string expectedHmac = "40 BC C3 0E 36 E2 06 06 AD 24 A3 20 8F 50 51 3D 38 33 08 E6 50 75 FE 09 84 FA 08 5B 80 6A AF 53";
             expectedHmac = expectedHmac.Trim().Replace(" ", "").ToLower();
             Assert.Equal(expectedHmac, ByteArrayToHex(hmac));
         }
