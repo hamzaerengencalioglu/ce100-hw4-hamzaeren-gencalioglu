@@ -1,12 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "wW9hmuSkIMd7yK/lb2+v3l5vrw7eoIycMp6+Te+gDHPzZN7DJ+jxOd7S1NuMwjH68PqZf5rYygYXxSYzv+Qhaw==",
+  "dgSpecHash": "f3jlVcjYEDjI2kYpKFFhBaOUGa+csIF6mVIQTcf/Py14Ot4KYQXDD2Vc7gL4c4pUb2dtZrwLR8oXFytsrIF4aw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Administrator\\Desktop\\ce100-hw4-hamzaeren-gencalioglu\\CryptoApplication\\CryptoApplication.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\7.0.5\\microsoft.netcore.app.runtime.win-x64.7.0.5.nupkg.sha512",
-    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\7.0.5\\microsoft.windowsdesktop.app.runtime.win-x64.7.0.5.nupkg.sha512",
-    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\7.0.5\\microsoft.aspnetcore.app.runtime.win-x64.7.0.5.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }
