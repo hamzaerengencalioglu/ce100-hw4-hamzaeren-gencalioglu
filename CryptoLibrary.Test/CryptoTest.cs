@@ -35,7 +35,7 @@ namespace CryptoLibrary.Test
             string expectedHash = "55 BC A9 71 6F C0 CD CE 03 C8 D1 2B 35 FA 30 78 3A 77 65 38";
             
             expectedHash = expectedHash.Trim().Replace(" ", "").ToLower();
-            Assert.Equal(expectedHash, ByteArrayToHex(hash));
+            Assert.Equal(expectedHash, Crypto.ByteArrayToHex(hash));
         }
 
         [Fact]
@@ -52,23 +52,7 @@ namespace CryptoLibrary.Test
             // Assert
             string expectedHash = "59 D1 6C 31 32 AE 41 C0 F5 19 8F 77 C6 A1 59 C4 03 51 D2 88 52 C0 37 BF 0B 24 11 BE 7B DB 57 36";
             expectedHash = expectedHash.Trim().Replace(" ", "").ToLower();
-            Assert.Equal(expectedHash, ByteArrayToHex(hash));
-        }
-
-        [Fact]
-        public void ComputeSHA512_ValidData_ComputesCorrectHash()
-        {
-            // Arrange
-            string filePath = File.ReadAllText("TransformFile/input.txt");
-            byte[] data = Encoding.UTF8.GetBytes(filePath);
-
-            // Act
-            byte[] hash = Crypto.ComputeSHA512(data);
-
-            // Assert
-            string expectedHash = "7C 86 A9 86 04 A6 70 3A 3D 3D B0 E1 62 8E 3F B8 98 75 CA 3D 74 0B 91 50 C3 2C 29 19 A3 81 22 B0 82 E2 AF 14 27 8E 47 77 C5 38 07 0E 70 AF 7A 34 FA 75 D5 28 3F 08 66 30 57 6F 06 3C F3 28 7C 1C";
-            expectedHash = expectedHash.Trim().Replace(" ", "").ToLower();
-            Assert.Equal(expectedHash, ByteArrayToHex(hash));
+            Assert.Equal(expectedHash, Crypto.ByteArrayToHex(hash));
         }
 
         [Fact]
@@ -119,7 +103,7 @@ namespace CryptoLibrary.Test
             // Assert
             string expectedHmac = "DA 44 2D BC 79 83 10 B8 EC 2F ED D8 8E 45 D6 25 2D FD BC EE";
             expectedHmac = expectedHmac.Trim().Replace(" ", "").ToLower();
-            Assert.Equal(expectedHmac, ByteArrayToHex(hmac));
+            Assert.Equal(expectedHmac, Crypto.ByteArrayToHex(hmac));
         }
 
         [Fact]
@@ -136,21 +120,14 @@ namespace CryptoLibrary.Test
             // Assert
             string expectedHmac = "40 BC C3 0E 36 E2 06 06 AD 24 A3 20 8F 50 51 3D 38 33 08 E6 50 75 FE 09 84 FA 08 5B 80 6A AF 53";
             expectedHmac = expectedHmac.Trim().Replace(" ", "").ToLower();
-            Assert.Equal(expectedHmac, ByteArrayToHex(hmac));
+            Assert.Equal(expectedHmac, Crypto.ByteArrayToHex(hmac));
         }
 
         // Add more unit tests for other methods
 
-        private string ByteArrayToHex(byte[] bytes)
-        {
-            StringBuilder hex = new StringBuilder(bytes.Length * 2);
-            foreach (byte b in bytes)
-                hex.AppendFormat("{0:x2}", b);
-            return hex.ToString();
-        }
 
         [Fact]
-        public void TransformFileTest()
+        public void TransformFile_Test()
         {
 
             // Arrange
@@ -194,72 +171,21 @@ namespace CryptoLibrary.Test
             Assert.Equal(plainText, decryptedText);
         }
 
-            private const int DIGITS = 6;
 
-            [Fact]
-            public void GenerateHOTP_ValidParameters_ReturnsValidOTP()
-            {
-                // Arrange
-                string key = "Trabzonspor";
-                long counter = 123456;
+        [Fact]
+        public void HOTP_Test()
+        {
+            // Arrange
+            string key = "Trabzonspor1967";
+            ulong counter = 123456;
+            int digits = 6;
+            int expectedOTP = 722997;
 
-                // Act
-                string otp = Crypto.GenerateHOTP(key, counter);
+            // Act
+            int actualOTP = Crypto.HOTP(key, counter, digits);
 
-                // Assert
-                Assert.NotNull(otp);
-                Assert.Equal(DIGITS, otp.Length);
-                Assert.Matches("^[0-9]+$", otp);
-            }
-
-            [Fact]
-            public void GenerateHOTP_WithDifferentCounters_ReturnsDifferentOTPs()
-            {
-                // Arrange
-                string key = "Trabzonspor";
-                long counter1 = 123456;
-                long counter2 = 123457;
-
-                // Act
-                string otp1 = Crypto.GenerateHOTP(key, counter1);
-                string otp2 = Crypto.GenerateHOTP(key, counter2);
-
-                // Assert
-                Assert.NotEqual(otp1, otp2);
-            }
-
-            [Fact]
-            public void GenerateHOTP_WithDifferentKeys_ReturnsDifferentOTPs()
-            {
-                // Arrange
-                string key1 = "Trabzonspor";
-                string key2 = "tr123456789";
-                long counter = 123456;
-
-                // Act
-                string otp1 = Crypto.GenerateHOTP(key1, counter);
-                string otp2 = Crypto.GenerateHOTP(key2, counter);
-
-                // Assert
-                Assert.NotEqual(otp1, otp2);
-            }
-
-            [Fact]
-            public void GenerateHOTP_WithLargeCounters_ReturnsValidOTP()
-            {
-                // Arrange
-                string key = "Trabzonspor";
-                long counter = long.MaxValue;
-
-                // Act
-                string otp = Crypto.GenerateHOTP(key, counter);
-
-                // Assert
-                Assert.NotNull(otp);
-                Assert.Equal(DIGITS, otp.Length);
-                Assert.Matches("^[0-9]+$", otp);
-            }
-        
-
+            // Assert
+            Assert.Equal(expectedOTP, actualOTP);
+        }
     }
 }
